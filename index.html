@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wootz Steel: the science behind the pattern</title>
+<meta name="description" content="An interactive explainer on wootz steel, ancient Indian crucible steel, and the science behind its watered pattern.">
+<style>
+:root{--bg:#e4e8eb;--panel:#f3f5f6;--ink:#1a2027;--mute:#545e69;--line:#b9c1c8;--forge:#c96a12;--dark:#2b3138;--serif:"Iowan Old Style",Palatino,"Palatino Linotype",Georgia,serif;--sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 var(--sans)}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.15;margin:0}
+h2{font-size:clamp(1.6rem,4vw,2.2rem);margin-bottom:.5rem}
+p{margin:0 0 1rem;max-width:66ch}
+a{color:var(--forge)}
+:focus-visible{outline:3px solid var(--forge);outline-offset:2px}
+nav{position:sticky;top:0;z-index:5;background:rgba(228,232,235,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;gap:18px;overflow-x:auto;padding-top:10px;padding-bottom:10px;white-space:nowrap}
+nav a{color:var(--ink);text-decoration:none;font-size:.9rem}
+nav a:hover{color:var(--forge)}
+.hero{background:var(--dark);color:#eef1f3;padding:56px 0 0}
+.hero h1{font-size:clamp(2.2rem,7vw,4.4rem);max-width:14ch}
+.hero p{color:#c3cad1;margin-top:1rem;font-size:1.1rem}
+.hero .by{font-size:.9rem;color:#96a0aa;margin-top:1.5rem}
+.blade{display:block;width:100%;height:150px;margin-top:36px;border-top:3px solid var(--forge)}
+section{padding:64px 0;border-bottom:1px solid var(--line)}
+.lab{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;margin-top:24px}
+@media(max-width:760px){.lab{grid-template-columns:1fr}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:20px}
+.ctl{margin-bottom:18px}
+.ctl label{display:flex;justify-content:space-between;font-weight:600;font-size:.95rem}
+.ctl output{color:var(--forge);font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--forge);margin-top:6px}
+select{width:100%;padding:8px;margin-top:6px;font:inherit;border:1px solid var(--line);border-radius:4px;background:#fff}
+.out canvas{width:100%;height:170px;display:block;border-radius:4px;border:1px solid #0003}
+.verdict{margin-top:14px;padding-left:12px;border-left:4px solid var(--forge)}
+.verdict b{display:block;font-family:var(--serif);font-size:1.15rem}
+.bar{position:relative;height:14px;margin:14px 0 4px;border-radius:7px;background:linear-gradient(90deg,#9aa4ad 0 34%,#6b7680 34% 46%,#2b3138 46% 84%,#b8b0a6 84%)}
+.bar i{position:absolute;top:-4px;width:4px;height:22px;background:var(--forge);border-radius:2px;transform:translateX(-2px)}
+.scale{display:flex;font-size:.72rem;color:var(--mute)}
+.scale span{flex:0 0 auto}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin:22px 0 14px}
+.steps button{font:inherit;font-size:.9rem;padding:8px 12px;border:1px solid var(--line);background:var(--panel);border-radius:4px;cursor:pointer;color:var(--ink)}
+.steps button[aria-selected=true]{background:var(--dark);color:#fff;border-color:var(--dark)}
+.step{display:grid;grid-template-columns:150px 1fr;gap:24px}
+@media(max-width:760px){.step{grid-template-columns:1fr}}
+.temp{font-family:var(--serif);font-size:2.4rem;color:var(--forge);line-height:1}
+.temp small{display:block;font:.8rem var(--sans);color:var(--mute);margin-top:6px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:22px}
+.cards .panel h3{font-size:1.2rem;margin-bottom:.4rem}
+.cards .panel p{font-size:.95rem;margin:0 0 .6rem}
+.big{font-family:var(--serif);font-size:2rem;color:var(--forge)}
+details{background:var(--panel);border:1px solid var(--line);border-radius:6px;margin-top:10px}
+summary{cursor:pointer;padding:14px 18px;font-weight:600}
+details p{padding:0 18px;margin:0 0 14px}
+details[open] summary{color:var(--forge)}
+table{border-collapse:collapse;width:100%;margin-top:18px;font-size:.95rem;background:var(--panel)}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:var(--dark);color:#fff;font-weight:600}
+footer{background:var(--dark);color:#aeb7bf;padding:36px 0;font-size:.9rem}
+footer p{max-width:none;margin:.2rem 0}
+.note{font-size:.85rem;color:var(--mute)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>Wootz steel: a pattern that records how it was made</h1>
+    <p>Wootz is crucible steel from the Indian subcontinent. The wavy bands on its blades are not decoration. They are bands of iron carbide that formed while the steel cooled and was forged.</p>
+    <p class="by">Aryan Vijayrao Sune, SY CSE, Walchand College of Engineering, Sangli</p>
+  </div>
+  <canvas class="blade" id="hero" aria-label="Simulated etched wootz blade pattern" role="img"></canvas>
+</header>
+
+<nav aria-label="Sections"><div class="wrap">
+  <a href="#lab">Pattern lab</a><a href="#process">How it was made</a><a href="#sites">Where it was made</a><a href="#compare">Wootz vs pattern welding</a><a href="#myths">Myths and facts</a>
+</div></nav>
+
+<section id="lab"><div class="wrap">
+  <h2>Pattern lab</h2>
+  <p>Three things decide whether a wootz blade shows a pattern: how much carbon it has, whether trace elements are present, and how many times it is heated and forged. Change them and watch the etched surface.</p>
+  <div class="lab">
+    <div class="panel">
+      <div class="ctl"><label for="c">Carbon content <output id="cv"></output></label>
+        <input id="c" type="range" min="0.2" max="3" step="0.05" value="1.5"></div>
+      <div class="ctl"><label for="t">Trace carbide formers (V, Cr, Ti)</label>
+        <select id="t"><option value="0.2">None</option><option value="0.6">Very small amount</option><option value="1" selected>Small amount</option></select></div>
+      <div class="ctl"><label for="f">Heating and forging cycles <output id="fv"></output></label>
+        <input id="f" type="range" min="0" max="10" step="1" value="6"></div>
+      <p class="note">This is a simplified teaching model, not a metallurgical simulator. It follows the trends reported in the literature.</p>
+    </div>
+    <div class="panel out">
+      <canvas id="lab-c" aria-label="Simulated etched surface"></canvas>
+      <div class="bar" aria-hidden="true"><i id="mark"></i></div>
+      <div class="scale" aria-hidden="true"><span style="width:34%">soft steel</span><span style="width:12%">pearlite</span><span style="width:38%">wootz range</span><span>cast iron</span></div>
+      <div class="verdict" aria-live="polite"><b id="vt"></b><span id="vd"></span></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="process"><div class="wrap">
+  <h2>How a wootz blade was made</h2>
+  <p>Each stage changed the material. Pick a stage to see what happened and why it matters.</p>
+  <div class="steps" role="tablist" id="tabs"></div>
+  <div class="panel step" role="tabpanel" id="panel" aria-live="polite">
+    <div class="temp" id="st"></div>
+    <div><h3 id="sh"></h3><p id="sp" style="margin-top:.5rem"></p></div>
+  </div>
+</div></section>
+
+<section id="sites"><div class="wrap">
+  <h2>Where the evidence comes from</h2>
+  <p>Archaeologists have found real production sites and ingots, so wootz is known from physical evidence and not only from old texts.</p>
+  <div class="cards">
+    <div class="panel"><div class="big">Mel-siruvalur</div><p>Tamil Nadu. A production centre for crucible steel, which shows that wootz was made in many places and not one famous town.</p></div>
+    <div class="panel"><div class="big">Konasamudram</div><p>Telangana. A hoard of 60 crucible-steel ingots, 45 of them measured in detail. Their similar size and shape suggest organised, standardised production.</p></div>
+    <div class="panel"><div class="big">Junnar</div><p>Maharashtra. Iron objects here place crucible steel in a wider timeline and show that India was not the only region to develop it.</p></div>
+  </div>
+</div></section>
+
+<section id="compare"><div class="wrap">
+  <h2>Wootz is not the same as pattern-welded Damascus</h2>
+  <p>Two very different methods can give a blade with a wavy surface. The word Damascus is often used for both, which causes confusion.</p>
+  <table>
+    <tr><th></th><th>Wootz (crucible steel)</th><th>Pattern welding</th></tr>
+    <tr><td>Starting point</td><td>One high-carbon steel, melted in a sealed crucible</td><td>Several different iron and steel pieces</td></tr>
+    <tr><td>How the pattern forms</td><td>Carbide bands from solidification, thermal cycling and forging</td><td>Layers forge-welded, folded and twisted</td></tr>
+    <tr><td>What you see under the microscope</td><td>Cementite (Fe<sub>3</sub>C) particles in bands</td><td>Visible weld lines between layers</td></tr>
+  </table>
+</div></section>
+
+<section id="myths"><div class="wrap">
+  <h2>Myths and facts</h2>
+  <details><summary>Myth: wootz had one secret recipe</summary><p>Fact: several crucible-steel traditions existed, with different charges, ores and furnaces. Scientists also warn against naming one trace element as the single secret. The pattern depends on composition, cooling, cycling and forging together.</p></details>
+  <details><summary>Myth: ancient smiths knew nothing about control</summary><p>Fact: they had no instruments, but they controlled heat, carbon and forging by experience. Ingots of consistent size from Konasamudram show that the process was repeatable.</p></details>
+  <details><summary>Myth: wootz beats modern steel</summary><p>Fact: modern steels are cleaner, more consistent and stronger in many tests. What makes wootz remarkable is that this level of control was reached so early.</p></details>
+  <details><summary>Myth: the technology can never be reproduced</summary><p>Fact: Verhoeven and Pendray reproduced similar patterns by forging small crucible ingots. Modern recipes show the process is physically plausible, though not that historical smiths used exactly the same one.</p></details>
+</div></section>
+
+<footer><div class="wrap">
+  <p><b>Wootz Steel: Ancient Indian Metallurgy and the Science Behind It</b></p>
+  <p>Indian Knowledge Systems project by Aryan Vijayrao Sune (PRN 255109005), SY CSE, Walchand College of Engineering, Sangli.</p>
+  <p>Sources include J. D. Verhoeven and A. H. Pendray (Damascus steel reconstructions), Jaikishan, Desai and Rehren (Konasamudram ingots), Salvemini et al. (neutron studies of Indian swords), and Barnett et al. (EBSD of a wootz blade).</p>
+</div></footer>
+
+<script>
+// ---------- pattern drawing ----------
+function strength(c,t,f){
+  let cf = c<0.8?0 : c<1.3?(c-0.8)/0.5 : c<=2.0?1 : Math.max(0,1-(c-2.0)/0.6);
+  return cf*(0.2+0.8*t)*(0.15+0.85*f/10);
+}
+function draw(cv,s,cycles){
+  const w=cv.width=520,h=cv.height=110,ctx=cv.getContext('2d'),img=ctx.createImageData(w,h);
+  const warp=0.8+cycles*0.15;
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+    const n=Math.sin(x*.03+y*.05)*1.6+Math.sin(x*.013-y*.08)*1.2+Math.sin(x*.07+2)*.6;
+    const v=.5+.5*Math.sin(y*.42+n*warp+Math.sin(x*.01)*3);
+    const g=.5+.5*Math.sin(x*.9+y*.31)*.04;
+    const k=(0.5+(v-0.5)*s*1.9)*(1+ (g-.5));
+    const lum=Math.max(0,Math.min(1,k));
+    const i=(y*w+x)*4;
+    img.data[i]=55+lum*160;img.data[i+1]=62+lum*158;img.data[i+2]=70+lum*152;img.data[i+3]=255;
+  }
+  ctx.putImageData(img,0,0);
+}
+draw(document.getElementById('hero'),0.85,7);
+
+// ---------- lab ----------
+const $=id=>document.getElementById(id);
+function verdict(c,s){
+  if(c<0.8)return['Low-carbon steel','Mostly ferrite and pearlite. There is little cementite to form bands, so the surface stays plain.'];
+  if(c<1.0)return['Near eutectoid steel','The structure is mostly pearlite. It is hard, but there is no excess cementite to make a visible pattern.'];
+  if(c>2.1)return['Too much carbon','This is cast-iron territory. The steel is too brittle to forge, so no blade can be finished.'];
+  if(s>.55)return['Wootz-like pattern','Hypereutectoid steel with excess cementite. Trace elements and repeated forging collect the carbide into bands, which the etch reveals.'];
+  if(s>.25)return['Faint pattern','The carbon is in the right range, but the carbide is not well collected into bands. More cycles or a trace of carbide formers would help.'];
+  return['High carbon, no pattern','Cementite is present, but without cycling or trace elements it stays scattered and the surface looks plain.'];
+}
+function updateLab(){
+  const c=+$('c').value,t=+$('t').value,f=+$('f').value,s=strength(c,t,f);
+  $('cv').textContent=c.toFixed(2)+' wt%';$('fv').textContent=f;
+  draw($('lab-c'),s,f);
+  const v=verdict(c,s);$('vt').textContent=v[0];$('vd').textContent=v[1];
+  $('mark').style.left=Math.min(100,(c-0.2)/2.8*100)+'%';
+}
+['c','t','f'].forEach(id=>$(id).addEventListener('input',updateLab));updateLab();
+
+// ---------- process stepper ----------
+const S=[
+['Charge','Room temp','Prepare the charge','Wrought or bloomery iron is packed with a carbon-bearing material and selected plant matter. The iron\u2019s trace impurities, such as vanadium, are already part of the recipe without anyone measuring them.'],
+['Crucible','Sealed','Seal it in a crucible','A closed ceramic crucible holds the charge and keeps out most of the furnace atmosphere. It must survive very high heat and sudden temperature changes.'],
+['Melt','1,400\u00B0C+','Heat until carbon enters','Pure iron melts much hotter than copper or bronze. In the furnace the metal absorbs carbon, and its melting point drops as carbon rises. Smiths judged all this by eye and experience.'],
+['Cool','Slow','Cool slowly','The metal solidifies and carbon and trace elements collect between the growing crystals (microsegregation). Slow cooling favours the coarse carbide that later becomes the pattern.'],
+['Ingot','Cake','Break out the ingot','The result is a small steel cake, compact and valuable. Ingots were traded widely, so the steelmaker and the bladesmith were often different people in different places.'],
+['Forge','Narrow window','Forge with care','High-carbon steel is hard to forge. Too hot dissolves the carbide, too cool causes cracks. Repeated heating and hammering coarsens and aligns cementite particles into bands.'],
+['Etch','Finishing','Polish and etch','Etching changes how light reflects from the carbide-rich and carbide-poor regions. The watered pattern appears because it was already inside the steel.']];
+const tabs=$('tabs');
+S.forEach((s,i)=>{const b=document.createElement('button');b.setAttribute('role','tab');b.textContent=(i+1)+'. '+s[0];b.onclick=()=>show(i);tabs.appendChild(b)});
+function show(i){
+  [...tabs.children].forEach((b,j)=>b.setAttribute('aria-selected',j===i));
+  $('st').innerHTML=S[i][1]+'<small>'+S[i][0]+'</small>';$('sh').textContent=S[i][2];$('sp').textContent=S[i][3];
+}
+show(0);
+</script>
+</body>
+</html>
