@@ -1,0 +1,6 @@
+*.docx
+*.pptx
+.git
+.gitignore
+Dockerfile
+.dockerignore
